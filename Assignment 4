@@ -1,0 +1,185 @@
+ASSIGNMENT NO.4
+	Title:Create a Database using array of structures and perform following operations on it: 
+		i. Create Database 
+		ii. Display Database 
+		iii. Add record 
+		iv. Search record 
+		v. Modify record 
+		vi. Delete record 
+
+#include<stdio.h>
+#include<string.h>
+structemp
+{
+	int id;
+	char name[50];
+	float salary;
+}e[10];
+void create(structemp e[],int n);
+void display(structemp e[],int n);
+void search(structemp e[],int n);
+void modify(structemp e[],int n);
+void delete(structemp e[],int n);
+void add(structemp e[],int n);
+void main()
+{
+	intn,ch,id,salary;
+	char name[50];
+	printf("\n Enter the no of employees=");
+	scanf("%d",&n);
+	do
+	{
+		printf("\n 1.Create\n 2.Display\n 3.Search\n 4.Modify\n 5.Delete\n6.Add");
+		printf("\nEnter your choice=");
+		scanf("%d",&ch);
+		switch(ch)
+		{
+			case 1:create(e,n);
+				break;
+			case 2:display(e,n);
+				break;
+			case 3:search(e,n);
+				break;
+			case 4:modify(e,n);
+				break;
+			case 5:delete(e,n);
+				break;
+			case 6:add(e,n);
+				break;
+			default:printf("Invalid choice");
+				break;	
+		}
+	}while(ch!=0);
+}
+void create(structemp e[],int n)
+{
+	int i;
+	for(i=1;i<=n;i++)
+	{
+		printf("\nEnter the id of the employee=");
+		scanf("%d",&e[i].id);
+		printf("\nEnter the name of the employee=");
+		scanf("%s",&e[i].name);
+		printf("\nEnter the salary of the employee=");
+		scanf("%f",&e[i].salary);
+	}
+}
+void display(structemp e[],int n)
+{
+	int i;
+	printf("\n*****DATABASE*****");
+	printf("\nId\t\tName\t\tSalary");
+	for(i=1;i<=n;i++)
+	{
+		printf("\n%d\t\t%s\t\t%f",e[i].id,e[i].name,e[i].salary);
+	}
+}
+void search(structemp e[],int n)
+{
+	inti,j,f=0;
+	printf("\nEnter the id you want search=");
+	scanf("%d",&j);
+	for(i=1;i<=n;i++)
+	{
+		if(j==e[i].id)
+		{	
+			printf("\nId of the employee= %d",e[i].id);
+			printf("\nName of the employee= %s",e[i].name);	
+			printf("\nSalary of the Employee= %f",e[i].salary);
+			f=1;
+		}
+	}
+	if(f==1)
+	{
+		printf("\nData is successfully searched");
+	}
+	else
+	{	
+		printf("\nData searched is not found");
+	}	
+}
+void modify(structemp e[],int n)
+{
+	inti,j;
+	printf("\nEnter the entry you want to modify=");
+	scanf("%d",&j);
+	for(i=1;i<=n;i++)
+	{
+		if(j==e[i].id)
+		{
+			printf("\nEnter the id of the employee=");
+			scanf("%d",&e[i].id);
+			printf("\nEnter the name of the employee=");
+			scanf("%s",&e[i].name);
+			printf("\nEnter the salary of the employee=");
+			scanf("%f",&e[i].salary);
+			printf("\nEntry is modified");
+		}
+		
+	}
+}
+void delete(structemp e[],int n)
+{
+	inti,j;
+	printf("\nEnter the entry you want to delete=");
+	scanf("%d",&j);
+	for(i=1;i<=n;i++)
+	{
+		if(j==e[i].id)
+		{
+			while(j<=n)
+			{	
+				e[i].id=e[j+1].id;
+				strcpy(e[i].name,e[j+1].name);
+				e[i].salary=e[j+1].salary;
+				j++;
+			}
+		
+		
+			e[i].id=0;	
+			strcpy(e[i].name,("----"));
+			e[i].salary=0;
+			printf("\nPress 2 for display");
+		}
+	}
+}
+void add(structemp e[],int n)
+{
+	inti,j,k,f=0,f1=0;
+	printf("\nHow many entries you want to add=");
+	scanf("%d",&k);		
+	for(j=n+1;j<=n+k;j++)
+	{	
+
+
+			printf("\nEnter the id=");
+			scanf("%d",&e[j].id);
+			printf("\nEnter the name of the employee=");
+			scanf("%s",&e[j].name);
+			printf("\nEnter the salary of the employee=");
+			scanf("%f",&e[j].salary);
+		for(i=1;i<=n;i++)
+		{			
+			if(e[i].id==e[j].id)
+			{	
+				
+				printf("\nentry already exists");
+				f++;
+				
+			}
+			else
+			{
+				f1++;
+			}
+			continue;
+		}
+		
+	}	
+		if(f1>0&&f>1)
+		{
+			printf("\nId\t\tName\t\tSalary");
+			for(i=1;i<=n+k;i++)
+			{
+				printf("\n%d\t\t%s\t\t%f",e[i].id,e[i].name,e[i].salary);	
+			}	
+}
