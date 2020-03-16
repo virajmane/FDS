@@ -1,0 +1,142 @@
+
+Assignment no.:12
+Title: Implement Generalized Linked List (GLL) to create and display the book index.
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+typedef struct node
+{
+	union var
+	{
+		char data;
+		struct node *level_link;
+	}info;
+	int tag;
+	struct node *next;
+}node;
+
+int i=1;
+char str[20];
+int main()
+   {
+    int ch,flag=0;
+    struct node *x=NULL;
+    struct node *create();
+    void display(node *head, int level);
+    do
+     {
+      printf("\n1.create\n2.diplay\n3.quit");
+      printf("\n Enter your choice");
+     scanf("%d",&ch);
+     if(ch==1)
+     flag=1;
+      if(flag==1)
+         {
+     switch(ch)
+    {
+     case 1:i=1;
+            x=create();
+     break;
+     case 2:printf("index\n");
+            display(x,0);
+  
+     break;
+     case 3:break;
+     }
+     printf("\n Do you want to continue");
+     scanf("%d",&ch);
+      }
+    }while(ch!=3);
+
+  return 0;
+  }
+
+struct node *create()
+{
+	node *create_gll(node *head);
+	node *head=NULL;
+	int count=0,i;
+	printf("\nEnter string:");
+	scanf("%s",str);
+	for(i=0;str[i]!='\0';i++)
+	{
+		if(str[i]=='(')
+		count++;
+		else if(str[i]==')')
+		count--;
+		else continue;
+	}
+	head=create_gll(head);
+	return(head);
+}
+
+struct node *create_gll(node *head)
+{
+	node *n,*prev, *p=NULL;
+	head=NULL;
+	while(str[i]!='\0')
+	{
+		if(str[i]=='(')
+		{	
+	    n=(node *)malloc(sizeof(node));
+	    n->tag=1;
+	    n->next=NULL;
+	if(head==NULL)
+	  head=n;
+	else
+	prev->next=n;
+	prev=n;
+	i++;
+	n->info.level_link=create_gll(p);
+      }
+  	else if(str[i]==')')
+	{
+		i++;
+		return(head);
+	}
+	else
+	{
+		n=(node *)malloc(sizeof(node));
+		n->tag=0;
+	    	n->next=NULL;
+		n->info.data=str[i];
+		if(head==NULL)
+		head=n;
+		else
+		prev->next=n;
+		prev=n;
+		i++;
+	}
+     }
+  return(head);
+}
+
+void display(node *head, int level)
+{
+	int local=0,i;
+	while(head!=NULL)
+	{
+		if(head->tag==0)
+		{
+		while((head!=NULL)&&(head->tag==0))
+		{
+			if(local!=level)
+			printf("\t");
+			printf("%c",head->info.data);
+			head=head->next;
+			printf("\n");
+		}
+	}
+	else
+	{
+		for(i=0;i<level;i++)
+		printf("\t");
+		++local;
+		display(head->info.level_link, local);
+		printf("\n");
+		--local;
+		head=head->next;
+	}
+    }
+}
