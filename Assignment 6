@@ -1,0 +1,207 @@
+Assignment no.:6
+Title:Implement sequential file and perform following operations.     
+	i.displayii.Addiii.Search. iv. Modify. v. Delete record.
+
+
+#include <stdio.h>
+typedefstruct student
+{
+introllno;
+char name[20];
+float marks;
+int status;
+}student;
+
+void create();
+void display();
+void add(student rec1);
+int Delete(introllno);
+int search(introllno);
+void modify();
+
+void main()
+ {
+    FILE *fp;
+introllno,op,recno;
+student rec1;
+create();
+	printf("\n\n1)Read(display)\n2)add\n3)Delete\n4)Modify");
+printf("\n5)Search\n6)Quit");
+do
+     {
+
+printf("\nEnter Your Choice:");
+scanf("%d",&op);
+switch(op)
+          {
+case 1:display();
+break;
+case 2: printf("\nEnter a record to be inserted(roll no,name,marks) : ");
+scanf("%d%s%f",&rec1.rollno,rec1.name,&rec1.marks);
+add(rec1);
+break;
+case 3: printf("\nEnter the roll no.:");
+scanf("%d",&rollno);
+Delete(rollno);
+break;
+case 4: modify();
+break;
+case 5: printf("\nEnter a roll no. : ");
+scanf("%d",&rollno);
+recno=search(rollno);
+if(recno>=0)
+                  {
+printf("\n Record No.: %d",recno);
+fp=fopen("/home/admin/shubham//abc.txt","rb");
+fseek(fp,recno*sizeof(student),0);
+fread(&rec1,sizeof(student),1,fp);
+printf("\n%d  %s   %5.2f",rec1.rollno,rec1.name,rec1.marks);
+                  }
+else
+printf("\nRecord Not Found ");
+break;
+           }
+}while(op!=0);
+ }
+
+
+void create()
+ {
+    FILE *fp;
+if(!(fp=fopen("/home/admin/shubham//abc.txt","rb")))
+fp=fopen("/home/admin/shubham//abc.txt","wb");
+close(fp);
+ }
+void display()
+{
+    FILE *fp;
+studentcrec;
+int i=1,n;
+fp=fopen("/home/admin/shubham//abc.txt","r+b");
+fseek(fp,0,2);/*go to the end of file */
+    n=ftell(fp)/sizeof(student);//No. of records
+rewind(fp);
+for(i=1;i<=n;i++)
+       {
+fread(&crec,sizeof(student),1,fp);
+if(crec.status==0)//if the record is not logically deleted
+printf("\n%d) %d\t%s\t%7.2f",i,crec.rollno,crec.name,crec.marks);
+else
+printf("\n%d)      ****** deleted  *********",i);
+		
+       }
+}
+
+void add(student rec1)
+{
+    FILE *fp;
+studentcrec;
+intn,i,k;
+fp=fopen("/home/admin/shubham//abc.txt","r+b");
+    rec1.status=0;
+fseek(fp,0,2);/*go to the end of file */
+    n=ftell(fp)/sizeof(student);//No. of records
+if(n==0)//empty file
+      {
+fwrite(&rec1,sizeof(student),1,fp);
+fclose(fp);
+return;
+      }
+ /* Shift records until the point of insertion */
+    i=n-1;
+while(i>=0)
+       {
+fseek(fp,i*sizeof(student),0);
+fread(&crec,sizeof(student),1,fp);
+if(crec.rollno>rec1.rollno)
+           {
+fseek(fp,(i+1)*sizeof(student),0);
+fwrite(&crec,sizeof(student),1,fp);
+           }
+else
+break;s
+i--;
+        }
+    /*insert the record at (i+1)th position */
+i++;
+printf("\ni=%d",i);
+fseek(fp,i*sizeof(student),0);
+fwrite(&rec1,sizeof(student),1,fp);
+fclose(fp);
+}
+
+int Delete(introllno)
+{
+    FILE *fp;
+studentcrec;
+inti,n;
+fp=fopen("/home/admin/shubham//abc.txt","r+b");
+fseek(fp,0,2);/*go to the end of file */
+    n=ftell(fp)/sizeof(student);
+rewind(fp);
+for(i=1;i<n;i++)
+       {
+fread(&crec,sizeof(student),1,fp);
+if(crec.status==0)
+           {
+if(crec.rollno>rollno)
+              {
+printf("\nRecord does not exist ...");
+close(fp);
+return(0);
+              }
+if(crec.rollno==rollno)
+              {
+crec.status=1;
+fseek(fp,i*sizeof(student),0);
+fwrite(&crec,sizeof(student),1,fp);
+fclose(fp);
+return(1);
+              }
+           }
+       }
+return(0);
+}
+
+int search(introllno)
+{
+    FILE *fp;
+studentcrec;
+inti,n;
+fp=fopen("/home/admin/shubham//abc.txt","r+b");
+fseek(fp,0,2);/*go to the end of file */
+    n=ftell(fp)/sizeof(student);
+rewind(fp);
+for(i=0;i<n;i++)
+       {
+fread(&crec,sizeof(student),1,fp);
+if(crec.status==0)
+           {
+if(crec.rollno>rollno)
+               {
+fclose(fp);
+return(-1);
+               }
+if(crec.rollno==rollno)
+               {
+fclose(fp);
+return(i);
+               }
+           }
+       }
+return(-1);
+}
+
+void modify()
+{
+introllno;
+student rec1;
+printf("\n Enter the rollno of the record to be updated : ");
+scanf("%d",&rollno);
+printf("\nEnter a new record(roll no. name marks) : ");
+scanf("%d%s%f",&rec1.rollno,rec1.name,&rec1.marks);
+if(Delete(rollno))
+add(rec1);
+else
+printf("\n Record not found :");
+ }
