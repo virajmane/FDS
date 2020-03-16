@@ -1,0 +1,199 @@
+Assignmentno.:11
+Title: Accept input as a string and construct a Doubly Linked List (DLL) for the input string with each node contains, as a data one character from the string and perform:
+a) Insert b) delete c) Display forward, d) Display backward.
+ 
+#include<stdio.h>
+#include<string.h>
+#include<malloc.h>
+struct DLL
+{
+	struct DLL *prev;
+	int roll_no;
+	char name[10];
+	float per;
+	struct DLL *next;
+};
+struct DLL *create(struct DLL *start);
+struct DLL *dele(struct DLL *start);
+void modify(struct DLL *start);
+void display(struct DLL *start);
+void displayback(struct DLL *start);
+int main()
+  {
+struct DLL *start=NULL;
+ int ch;
+  do
+   {
+  printf("\nMENU\n1.create\n2.Display forword\n3.modify\n4.dele\n5.display backword\n6.exit");
+   printf("enter your choice");
+    scanf("%d",&ch);
+    switch(ch)
+       {
+          case 1:start=create(start);
+           break;
+          case 2:display (start);
+          break;
+         case 3:modify(start);
+           break;
+          case 4:start=dele(start);
+           break;
+          case 5:displayback(start);
+          break;
+        }
+    }while(ch!=6);
+  }    
+
+
+
+
+
+
+
+struct DLL *create(struct DLL *start)
+{
+	struct DLL *p,*q;
+	int i,r,n;
+	char stud_name[10];
+	float stud_per;
+	printf("\nEnter how many nodes to create:");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+		printf("Enter student roll no:");
+		scanf("%d",&r);
+		printf("Enter student name:");
+		scanf("%s",stud_name);
+		printf("Enter student percentage:");
+		scanf("%f",&stud_per);
+		p=(struct DLL *)malloc(sizeof(struct DLL));
+		p->roll_no=r;
+		strcpy(p->name,stud_name);
+		p->per=stud_per;
+		p->prev=NULL;
+		p->next=NULL;
+		if(start==NULL)
+		{
+			start=p;
+		}
+		else
+		{
+			q=start;
+			while(q->next!=NULL)
+			{
+				q=q->next;
+			}
+			p->prev=q;
+			q->next=p;
+		}
+	}
+	display(start);
+	return(start);
+}
+
+
+void display(struct DLL *start)
+{
+	struct DLL *q;
+	if(start==NULL)
+	{
+		printf("\nLIST IS EMPTY");
+	}
+	else
+	{
+		q=start;
+		printf("\n\tROLL NO\tNAME\tPERCENTAGE\n");
+		while(q!=NULL)
+		{
+			printf("\n\t%d\t%s\t%f",q->roll_no,q->name,q->per);
+			q=q->next;
+		}
+	}
+}
+
+
+void displayback(struct DLL *start)
+{
+	struct DLL *q;
+	if(start==NULL)
+	{
+		printf("\nLIST IS EMPTY");
+	}
+	else
+	{
+		q=start;
+		while(q->next!=NULL)
+		{
+		    q=q->next;
+		}
+		printf("\n\tROLL NO\tNAME\tPERCENTAGE\n");
+		while(q!=NULL)
+		{
+			printf("\n\t%d\t%s\t%f",q->roll_no,q->name,q->per);
+			q=q->prev;
+		}
+	}
+}
+
+struct DLL *dele(struct DLL *start)
+{
+	struct DLL *q;
+	int r;
+	printf("\nEnter the roll no of student to dele:");
+	scanf("%d",&r);
+	if(start==NULL)
+	{
+		printf("\nLIST IS EMPTY");
+	}
+	q=start;
+	while(q->roll_no!=r && q!=NULL)
+	{
+		q=q->next;
+	}
+	if(q!=NULL)
+	{
+		q->prev->next=q->next;
+		q->next->prev=q->prev;
+		free(q);
+	}
+	display(start);
+	return(start);
+
+}
+
+
+
+void modify(struct DLL *start)
+{
+	struct DLL *q;
+	int i,r,n;
+	char stud_name[10];
+	float stud_per;
+	printf("\nEnter the roll no of student to modify:");
+	scanf("%d",&r);
+	if(start==NULL)
+	{
+		printf("\nLIST IS EMPTY");
+	}
+	q=start;
+	while(q->roll_no!=r && q!=NULL)
+	{
+		q=q->next;
+	}
+	if(q->roll_no==r)
+	{
+		printf("Enter new roll no:");
+		scanf("%d",&r);
+		printf("Enter new name:");
+		scanf("%s",stud_name);
+		printf("Enter new percentage:");
+		scanf("%f",&stud_per);
+		q->roll_no=r;
+		strcpy(q->name,stud_name);
+		q->per=stud_per;
+	}
+	else
+	{
+		printf("NOT FOUND");
+	}
+	display(start);
+}
