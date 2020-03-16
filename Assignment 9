@@ -1,0 +1,326 @@
+Assignment no.:9
+Title:Create a singly linked list with options:
+		a. insert (at front, at end, in the middle),
+		b. delete (at front, at end, in the middle),
+		c. Display,
+		d. Display Reverse.
+
+#include<stdio.h>
+#include<malloc.h>
+typedefstruct node
+{
+	int info;
+	struct node *link;
+}node;
+
+node *create(node *head);
+void display(node *head);
+node *insertatfirst(node *head);
+node *insertbefore(node *head);
+node *insertafter(node *head);
+node *deletefirst(node *head);
+node *deletemiddle(node *head);
+node *deletelast(node *head);
+node *reverse(node *head);
+void main()
+{
+intch,n ,a[10],key,ch1;
+node *head='\0';
+do{
+printf("\n link lists menu :\n");
+printf("\n1. create\n2:display\n3.insert\n4.delete\n5.reverse\nenter your choice:\t\t");
+scanf("%d",&ch);
+switch(ch)
+       {
+	case 1: head=create(head);
+break;
+case 2: display(head);
+break;
+case 3: 
+do
+		        {
+printf("\n insert menu:\n\t1.first\n\t2.before\n\t3.after any node\n\t4.exit\n enter choice:");
+scanf("%d",&ch1);
+switch(ch1)
+			  {
+			case 1:head=insertatfirst(head);
+			break;
+			case 2: head=insertbefore(head);
+break;
+				case 3:head=insertafter(head);
+break;
+case 4:printf("exit") ;
+break;
+                            }
+break;
+	}while(ch1!=4);
+break;
+case 4:do
+                    {
+printf("\ndelete menu\n\t1.deletefirst\n\t2.delete middle\n\tdelete last\nenter your choice:");
+scanf("%d",&ch1);
+switch(ch1)
+                        {
+case 1: head=deletefirst(head);
+				break;
+case 2: head=deletemiddle(head);
+break;
+case 3:  head=deletelast(head);
+break;
+                          }
+break;
+}while(ch1!=0);
+case 5: head=reverse(head);
+break;
+default: printf("invalid choice");
+               }
+}while(ch!=0);
+  }
+
+
+node *create(node *head)
+{
+	inti,n,m;
+	node *p,*q;
+	printf("\nEnter how many nodes you want:");
+	scanf("%d",&n);
+	for(i=0;i<n;i++)
+	{
+	   p=(node *)malloc(sizeof(node));
+	printf("\nEnter data:");
+	scanf("%d",&m);
+	p->info=m;
+	p->link=NULL;
+	if(head==NULL)
+	   {
+		head=p;
+	   }
+	else
+	   {
+		q=head;
+	while(q->link!=NULL)
+	        {
+		   q=q->link;
+		}
+		q->link=p;
+	   }
+	}
+	display(head);
+return(head);
+}
+void display(node *head)
+{
+	node *p,*q;
+	if(head==NULL)
+	{
+	printf("\nList is empty");
+	}
+	else
+	{
+	printf("\nLinked list:");
+	   q=head;
+	printf("\n\t\tHEAD->");
+	while(q!=NULL)
+	   {
+		printf("%d->",q->info);
+	        q=q->link;
+	   }
+	printf("NULL");
+	}
+}
+node *insertatfirst(node *head)
+{
+	node *p,*q;
+	int m;
+	p=(node *)malloc(sizeof(node));
+	printf("\nEnter data:");
+	scanf("%d",&m);
+	p->info=m;
+	p->link=NULL;
+	if(head==NULL)
+	{
+		head=p;
+	}
+	else
+	{
+		p->link=head;
+		head=p;
+	}
+	display(head);
+	return(head);
+}
+node *insertbefore(node *head)
+{
+	intkey,m;
+	node *p,*q;
+	if(head==NULL)
+	{
+		printf("\nList is empty");
+	}
+	else
+	{
+		p=(node *)malloc(sizeof(node));
+		printf("\nEnter data:");
+		scanf("%d",&m);
+		p->info=m;
+		p->link=NULL;
+		printf("Enter the element before you want to enter the new node:");
+		scanf("%d",&key);
+		q=head;
+		while(q->link->info!=key)
+		{
+			q=q->link;
+		}
+		p->link=q->link;
+		q->link=p;
+	}
+	display(head);
+	return(head);
+}
+node *insertafter(node *head)
+{
+	node *p,*q;
+	intkey,m;
+	if(head==NULL)
+	{
+		printf("\n\t\tLIST IS EMPTY");
+	}
+	else
+	{
+		p=(node *)malloc(sizeof(node));
+		printf("\nEnter data:");
+		scanf("%d",&m);
+		p->info=m;
+		p->link=NULL;
+		printf("Enter the element after you want to enter the new node:");
+		scanf("%d",&key);
+		q=head;
+		while(q->info!=key)
+		{
+			q=q->link;
+		}
+		p->link=q->link;
+		q->link=p;
+	}
+	display(head);
+	return(head);
+}
+node *deletefirst(node *head)
+{
+	node *p,*q;
+	if(head==NULL)
+	{
+		printf("\nList is empty");
+		return(head);
+	}
+	if(head->link==NULL)
+	{
+		p=head;
+		head=NULL;
+		free(p);
+	}
+	else
+	{
+		p=head;
+		head=head->link;
+		free(p);
+	}
+	display(head);
+	return(head);
+}
+node *deletemiddle(node *head)
+{
+	node *p,*q;
+	int key;
+	if(head==NULL)
+	{
+		printf("\nList is empty");
+		return(head);
+	}
+	if(head->link==NULL)
+	{
+		p=head;
+		head=NULL;
+		free(p);
+	}
+	else
+	{
+		printf("Enter the element of list you want to delete:");
+		scanf("%d",&key);
+		q=head;
+		while(q->link->info!=key && q->link!=NULL)
+		{
+
+			q=q->link;
+		}
+		if(q->link->info==key)
+		{
+			p=q->link;
+			q->link=q->link->link;
+			free(p);
+		}
+		else
+		{
+			printf("\nNOT FOUND");
+		}
+	}
+	display(head);
+	return(head);
+}
+node *deletelast(node *head)
+{
+	node *p,*q;
+	if(head==NULL)
+	{
+		printf("\nList is empty");
+		return(head);
+	}
+	if(head->link==NULL)
+	{
+		p=head;
+		head=NULL;
+		free(p);
+	}
+	else
+	{
+		q=head;
+		while(q->link->link!=NULL)
+		{
+			q=q->link;
+		}
+			p=q->link;
+			q->link=NULL;
+			free(p);
+	}
+	display(head);
+	return(head);
+}
+node *reverse(node *head)
+{
+	node *p,*t,*r;
+	if(head==NULL)
+	{
+		printf("\nList is empty");
+		return(head);
+	}
+	else
+	{
+		p=NULL;
+		t=head;
+		r=t->link;
+		while(t!=NULL)
+		{
+			t->link=p;
+			p=t;
+			t=r;
+			if(t!=NULL)
+			{
+				r=r->link;
+			}
+		}
+	}
+	display(p);
+	return(p);
+}
+
+
