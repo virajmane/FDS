@@ -1,0 +1,82 @@
+ASSIGNMENT NO.7
+TITLE: Implementation of quick sort.
+
+
+#include<stdio.h>
+void swap (int a[], int left, int right)
+{
+	int temp;
+	temp=a[left];
+	a[left]=a[right];
+	a[right]=temp; 
+}
+
+
+voidprintarr(int a[], int n);
+
+void quicksort( int a[], int low, inthigh,int n )
+{
+	int pivot;
+	if ( high > low )
+	{
+		pivot = part( a, low, high );
+		printf("\n%d is pivot element\n",a[pivot]);
+		printarr(a,n);
+		quicksort( a, low, pivot-1,n );
+	
+		quicksort( a, pivot+1, high,n );
+	}
+} 
+int part( int a[], int low, int high )
+{
+	int left, right;
+	intpivot_item;
+	int pivot = left = low; 
+	pivot_item = a[low]; 
+	right = high;
+	while ( left < right ) 
+	{
+	
+		while( a[left] <= pivot_item ) 
+		{
+			left++;
+		}
+		
+		while( a[right] >pivot_item ) 
+		{
+			right--;
+		}
+		if ( left < right ) 
+		{
+			swap(a,left,right);
+		}
+	}
+
+	a[low] = a[right];
+	a[right] = pivot_item;
+	return right;
+}
+int main()
+{
+	int a[50], i, n;
+	printf("\nEnter no. of elements: "); 
+	scanf("%d", &n);
+	printf("\nEnter the elements: \n");
+	for (i=0; i<n; i++)
+		scanf ("%d", &a[i]);
+	printf("\nUnsorted elements: \n");
+	printarr(a,n);
+	quicksort(a,0,n-1,n);
+	printf("\nSorted elements: \n");
+	printarr(a,n);
+}
+
+
+void printarr(int a[], int n)
+{
+	int i;
+	printf("\n");
+	for (i=0; i<n; i++)
+		printf(" %d ", a[i]);
+	printf("\n");
+}
